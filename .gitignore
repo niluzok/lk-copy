@@ -1,0 +1,47 @@
+# phpstorm project files
+.idea
+.vscode
+basic
+
+# netbeans project files
+nbproject
+
+# zend studio for eclipse project files
+.buildpath
+.project
+.settings
+
+# windows thumbnail cache
+Thumbs.db
+
+# composer vendor dir
+/vendor
+
+# composer itself is not needed
+composer.phar
+
+# Mac DS_Store Files
+.DS_Store
+
+# phpunit itself is not needed
+phpunit.phar
+# local phpunit config
+/phpunit.xml
+
+/neoelementum/runtime
+node_modules/
+/.csscomb.json
+/gulpfile.js
+/package-lock.json
+/package.json
+tests/_support/_generated/
+web/rec
+web/call
+/modules/internal/classes/debug/bartolini/data/order_tracking.csv
+/modules/internal/classes/debug/sda/data/order_tracking.csv
+/modules/internal/classes/debug/sda/data/errors_debugger.csv
+/modules/internal/classes/debug/sda/data/errors_grubber.csv
+/modules/internal/classes/debug/bartolini/data/errors_grubber.csv
+/modules/internal/classes/debug/bartolini/data/debug_grubber.csv
+
+/commands/TestController.php

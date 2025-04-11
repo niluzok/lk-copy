@@ -1,0 +1,539 @@
+openapi: 3.0.0
+info:
+  title: API для 1С
+  version: 1.0.0
+  contact:
+    email: support.contact@webvork.com
+  description: Сохранение данных созданных или измененных в 1С
+paths:
+  '/onec/products/{guid1c}':
+    post:
+      summary: Добавить товар
+      x-stoplight:
+        id: d630d6b2747a7
+      responses:
+        2XX:
+          description: Товар добавлен
+          content: {}
+        4XX:
+          description: Произошла ошибка
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem-RFC-7807'
+        5XX:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem-RFC-7807'
+      operationId: onec-products
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Api-Key
+          description: Ключ для доступа по API
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+    put:
+      description: ''
+      responses:
+        '200':
+          description: 'Товар найден, информация обновлена'
+        '404':
+          description: Товар не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem-RFC-7807'
+        5XX:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem-RFC-7807'
+        4XX:
+          description: Произошла ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem-RFC-7807'
+      operationId: update-onec-product
+      x-stoplight:
+        id: cpot4a339xf6c
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Api-Key
+          description: Ключ для доступа по API
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      summary: Обновить информацию по товару
+    parameters:
+      - schema:
+          type: string
+        name: guid1c
+        in: path
+        required: true
+        description: GUID товара в 1С
+  '/onec/suppliers/{guid1c}':
+    post:
+      description: ''
+      responses:
+        '200':
+          description: Поставщик добавлен
+        5XX:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem-RFC-7807'
+        4XX:
+          description: Произошла ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem-RFC-7807'
+      operationId: post-onec-suppliers
+      x-stoplight:
+        id: uyd26rwco2uav
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Supplier'
+      summary: Добавить нового поставщика
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Api-Key
+          description: Ключ для доступа по API
+    put:
+      description: ''
+      responses:
+        '200':
+          description: Данные поставщика обновлены успешно
+        '404':
+          description: Поставщик не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem-RFC-7807'
+        5XX:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem-RFC-7807'
+        4XX:
+          description: Произошла ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem-RFC-7807'
+      operationId: put-onec-suppliers
+      x-stoplight:
+        id: w7s8tn6xcx7zs
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Api-Key
+          description: Ключ для доступа по API
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Supplier'
+      summary: Обновить данные поставщика
+    parameters:
+      - schema:
+          type: string
+        name: guid1c
+        in: path
+        required: true
+        description: GUID поставщика в 1С
+  /onec/orders:
+    get:
+      summary: Получить заказы
+      tags: []
+      responses:
+        '200':
+          description: Заказы получены
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '422':
+          description: Ошибка валидации полей фильтра
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem-RFC-7807'
+        4XX:
+          description: Произошла ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem-RFC-7807'
+      operationId: get-onec-good
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: dateFrom
+          description: 'Начальная дата в формате "2024-12-21" или "2024-12-21 12:35:12"'
+        - schema:
+            type: string
+          in: query
+          name: dateTo
+          description: 'Конечная дата в формате "2024-12-21" или "2024-12-21 12:35:12"'
+      description: ''
+      x-stoplight:
+        id: imw5sn3gqy0d3
+    parameters: []
+  /onec/order/download-invoice:
+    get:
+      summary: Получить инвойс к заказу
+      tags: []
+      responses:
+        '200':
+          description: Инвойс найден
+          content:
+            application/pdf:
+              schema:
+                type: object
+                properties: {}
+        4XX:
+          description: Произошла ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem-RFC-7807'
+      operationId: download-invoice
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: orderId
+          description: id заказа
+      description: ''
+      x-stoplight:
+        id: iuwne6bgxl267
+    parameters: []
+  /onec/order/download-sticker:
+    get:
+      summary: Получить наклейку к заказу
+      tags: []
+      responses:
+        '200':
+          description: Наклейка найдена
+          content:
+            application/pdf:
+              schema:
+                type: object
+                properties: {}
+        4XX:
+          description: Произошла ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem-RFC-7807'
+      operationId: download-sticker
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: orderId
+          description: id заказа
+      description: ''
+      x-stoplight:
+        id: iuwne6bgxl888
+    parameters: []
+components:
+  schemas:
+    Product:
+      type: object
+      description: Товар
+      required:
+        - guid1c
+        - gtin
+        - name
+        - unit
+      properties:
+        guid1c:
+          type: string
+          description: 'GUID 1С (1C: GUID)'
+          x-stoplight:
+            id: zn9o605x89t73
+        gtin:
+          type: string
+          description: 'GTIN (1C: Штрихкод)'
+        category:
+          type: string
+          description: 'Категория товара (1C: Вид номенклатуры)'
+        name:
+          type: string
+          description: 'Название (1C: Рабочее наименование)'
+        unit:
+          type: string
+          description: 'Единицы измерения (1C: Единица хранения)'
+    Supplier:
+      title: Supplier
+      description: Поставщик
+      x-stoplight:
+        id: 6us9jq2h08df6
+      type: object
+      properties:
+        guid1c:
+          type: string
+          x-stoplight:
+            id: px4tekdab9dr0
+          description: 'GUID 1С (1С: GUID)'
+        name:
+          type: string
+          x-stoplight:
+            id: jm8ynl8ujmyoh
+          description: 'Имя (1С: Рабочее наименование)'
+        inn:
+          type: string
+          x-stoplight:
+            id: wl3j0x4ewn2tz
+          description: ИНН
+        email:
+          type: string
+          x-stoplight:
+            id: 95kdmf4gsrl6u
+          description: 'Электроная почта (1C: E-mail)'
+        phone:
+          type: string
+          x-stoplight:
+            id: sqy13tu6ej5gu
+          description: 'Телефон (1С: Телефон)'
+        physical_address:
+          type: string
+          x-stoplight:
+            id: qjo9v7pliwlw8
+          description: 'Физический адресс (1С: Фактический адрес контрагента)'
+        legal_address:
+          type: string
+          x-stoplight:
+            id: h7rxjitv7v8jg
+          description: 'Юридический адрес (1С: Юридический адрес контрагента)'
+    Order:
+      type: object
+      x-examples:
+        Example 1:
+          id: 8821909
+          date: '2024-05-15 13:53:58'
+          courier: null
+          trackingNumber: null
+          isDelivered: false
+          isPaid: false
+          paymentMethod: "cash-on-delivery"
+          invoiceUrl: /api/onec/v1/order/download-invoice?orderId=8821909
+          stickerUrl: /api/onec/v1/order/download-sticker?orderId=8821909
+          address:
+            region: Камчатский край
+            city: Петропавловск-Камчатский
+            street: Проспект 50 лет Октября
+            building: 9/5
+            housing: null
+            apartment: '47'
+            zipCode: '683024'
+          client:
+            firstname: Алаз Аитович
+            surname: Рузыев
+            phone: '79245856388'
+          orderGoods:
+            - productGtin: null
+              productGuid: null
+              productName: Urogun RU
+              productDiscount: null
+              productCount: 1
+              productPrice: 99000
+              totalProductPrice: 99000
+            - productGtin: null
+              productGuid: null
+              productName: Urogun RU
+              productDiscount: null
+              productCount: 2
+              productPrice: 99000
+              totalProductPrice: 198000
+            - productGtin: null
+              productGuid: null
+              productName: Artrolux Cream RU
+              productDiscount: null
+              productCount: 1
+              productPrice: 1
+              totalProductPrice: 0
+          deliveryPrice: 799
+      description: Заказ
+      properties:
+        id:
+          type: integer
+          minimum: 0
+        date:
+          type: string
+        courier:
+          type: string
+        trackingNumber:
+          type: string
+        isDelivered:
+          type: boolean
+        isPaid:
+          type: boolean
+        paymentMethod:
+          type: string
+        invoiceUrl:
+          type: string
+        stickerUrl:
+          type: string
+        address:
+          type: object
+          properties:
+            region:
+              type: string
+            city:
+              type: string
+            street:
+              type: string
+            building:
+              type: string
+            housing:
+              type: string
+            apartment:
+              type: string
+            zipCode:
+              type: string
+        client:
+          type: object
+          properties:
+            firstname:
+              type: string
+            surname:
+              type: string
+            phone:
+              type: string
+        orderGoods:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderProduct'
+        deliveryPrice:
+          type: integer
+    OrderProduct:
+      type: object
+      x-examples:
+        Example 1:
+          productGuid: a2617853-1ffc-4bb2-b73d-aff60d1d1791
+          productName: Urogun RU
+          productDiscount: 10
+          productCount: 2
+          productPrice: 100
+          totalProductPrice: 190
+      properties:
+        productGtin:
+          type: string
+        productGuid:
+          type: string
+        productName:
+          type: string
+        productDiscount:
+          type: integer
+        productCount:
+          type: integer
+        productPrice:
+          type: integer
+        totalProductPrice:
+          type: integer
+      description: Товар в заказе
+      title: ''
+    Problem-RFC-7807:
+      title: Problem-RFC-7807
+      x-stoplight:
+        id: xmk4ceotv481f
+      type: object
+      description: |-
+        Answer format when an error occurs.
+        Corresponds to [RFC 7807 Problem Details](https://datatracker.ietf.org/doc/html/rfc7807).
+      properties:
+        error:
+          type: object
+          x-stoplight:
+            id: 59i5r8k78sj59
+          required:
+            - status
+            - title
+            - detail
+            - instance
+            - trace_id
+            - additional_info
+          properties:
+            status:
+              type: integer
+              x-stoplight:
+                id: vq8q3kl3673vv
+              description: The HTTP status code.
+              example: 400
+            type:
+              type: string
+              x-stoplight:
+                id: v2qrmi8ka2u32
+              format: uri
+              description: |
+                A URI reference [RFC3986] that identifies the problem type. This specification provide human-readable documentation for the problem type.
+              example: 'https://example.com/probs/out-of-credit'
+            title:
+              type: string
+              x-stoplight:
+                id: 9ju8uxex1lreq
+              description: 'A short, human-readable summary of the problem type. It SHOULD NOT change from occurrence to occurrence of the problem, except for purposes of localization'
+              example: You do not have enough credit.
+            detail:
+              type: string
+              x-stoplight:
+                id: dxinfjlgl4aj4
+              description: A human-readable explanation specific to this occurrence of the problem.
+              example: 'Your current balance is 30, but that costs 50.'
+            instance:
+              type: string
+              x-stoplight:
+                id: f5g719zbxkp78
+              format: uri
+              description: A URI reference that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
+              example: 'https://profile.webvork.ru/api/v1/recommendations'
+            trace_id:
+              type: string
+              x-stoplight:
+                id: 88tx5yz81vdl6
+              description: X-Correlation-ID header value for request tracing
+              example: 457d832d-e576-4d81-a474-ba010c5ac45e
+              format: uuid
+            additional_info:
+              type: object
+              x-stoplight:
+                id: 6favufi0gdpwe
+              description: Additional parameters providing information about the error
+              example:
+                errors:
+                  name: Invalid value
+      required:
+        - error
+  requestBodies: {}
+servers:
+  - url: 'https://api.neologistics.it'
+    description: Production
+  - url: 'https://api_stage.neologistics.it'
+    description: Stage
+tags:
+  - name: 1C
